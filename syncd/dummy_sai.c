@@ -1,0 +1,174 @@
+#include "sai.h"
+#include "saiobject.h"
+
+/* dummy saifunctions, in case of these functions are not implemented in vendor's sai
+ */
+
+__attribute__((weak)) sai_status_t sai_api_initialize(
+        _In_ uint64_t flags,
+        _In_ const sai_service_method_table_t *services)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_api_query(
+        _In_ sai_api_t api,
+        _Out_ void **api_method_table)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_api_uninitialize(void)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_log_set(
+        _In_ sai_api_t api,
+        _In_ sai_log_level_t log_level)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_object_type_t sai_object_type_query(
+        _In_ sai_object_id_t object_id)
+{
+    return SAI_OBJECT_TYPE_NULL;
+}
+
+__attribute__((weak)) sai_object_id_t sai_switch_id_query(
+        _In_ sai_object_id_t object_id)
+{
+    return SAI_NULL_OBJECT_ID;
+}
+
+__attribute__((weak)) sai_status_t sai_dbg_generate_dump(
+        _In_ const char *dump_file_name)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_object_type_get_availability(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ uint32_t attr_count,
+        _In_ const sai_attribute_t *attr_list,
+        _Out_ uint64_t *count)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+
+__attribute__((weak)) sai_status_t sai_get_maximum_attribute_count(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _Out_ uint32_t *count) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_get_object_count(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _Out_ uint32_t *count) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_get_object_key(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _Inout_ uint32_t *object_count,
+        _Inout_ sai_object_key_t *object_list) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_bulk_get_attribute(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ uint32_t object_count,
+        _In_ const sai_object_key_t *object_key,
+        _Inout_ uint32_t *attr_count,
+        _Inout_ sai_attribute_t **attr_list,
+        _Inout_ sai_status_t *object_statuses) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_attribute_capability(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ sai_attr_id_t attr_id,
+        _Out_ sai_attr_capability_t *attr_capability) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_attribute_enum_values_capability(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ sai_attr_id_t attr_id,
+        _Inout_ sai_s32_list_t *enum_values_capability) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_stats_capability(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _Inout_ sai_stat_capability_list_t *stats_capability) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_stats_st_capability(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _Inout_ sai_stat_st_capability_list_t *stats_capability)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_bulk_object_get_stats(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ uint32_t object_count,
+        _In_ const sai_object_key_t *object_key,
+        _In_ uint32_t number_of_counters,
+        _In_ const sai_stat_id_t *counter_ids,
+        _In_ sai_stats_mode_t mode,
+        _Inout_ sai_status_t *object_statuses,
+        _Out_ uint64_t *counters) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_bulk_object_clear_stats(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ uint32_t object_count,
+        _In_ const sai_object_key_t *object_key,
+        _In_ uint32_t number_of_counters,
+        _In_ const sai_stat_id_t *counter_ids,
+        _In_ sai_stats_mode_t mode,
+        _Inout_ sai_status_t *object_statuses) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_object_stage(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_type_t object_type,
+        _In_ uint32_t attr_count,
+        _In_ const sai_attribute_t *attr_list,
+        _Out_ sai_object_stage_t *stage) {
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_tam_telemetry_get_data(
+        _In_ sai_object_id_t switch_id,
+        _In_ sai_object_list_t obj_list,
+        _In_ bool clear_on_read,
+        _Inout_ sai_size_t *buffer_size,
+        _Out_ void *buffer)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) sai_status_t sai_query_api_version(
+        _Out_ sai_api_version_t *version)
+{
+    return SAI_STATUS_NOT_IMPLEMENTED;
+}
