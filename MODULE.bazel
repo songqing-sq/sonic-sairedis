@@ -7,7 +7,7 @@ bazel_dep(name = "platforms", version = "1.0.0")
 
 bazel_dep(name = "sonic-swss-common", version = "1.0")
 #git_override(
-#    module_name = "sonic_rules",
+#    module_name = "sonic-swss-common",
 #    remote = "https://github.com/sonic-net/sonic-swss-common.git",
 #    commit = "",
 #)

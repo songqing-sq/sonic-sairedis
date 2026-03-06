@@ -4,7 +4,6 @@ load("@sonic_rules//:shared_library.bzl", "sonic_shared_library", "sonic_shared_
 
 saimeta_SRCS = [
         "AttrKeyMap.cpp",
-        "DummySaiInterface.cpp",
         "Globals.cpp",
         "Meta.cpp",
         "MetaKeyHasher.cpp",
@@ -21,6 +20,7 @@ saimeta_SRCS = [
         "NotificationIcmpEchoSessionStateChange.cpp",
         "NotificationHaSetEvent.cpp",
         "NotificationHaScopeEvent.cpp",
+        "NotificationFlowBulkGetSessionEvent.cpp",
         "NotificationTwampSessionEvent.cpp",
         "NotificationPortHostTxReadyEvent.cpp",
         "NotificationTamTelTypeConfigChange.cpp",
@@ -38,6 +38,7 @@ saimeta_SRCS = [
         "SaiObjectCollection.cpp",
         "SaiSerialize.cpp",
         "SelectableChannel.cpp",
+        "DummySaiInterface.cpp",
         "ZeroMQSelectableChannel.cpp",
 ]
 

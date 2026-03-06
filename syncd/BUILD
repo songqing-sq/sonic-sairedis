@@ -19,6 +19,7 @@ Syncd_SRCS = [
         "DisabledRedisClient.cpp",
         "FlexCounter.cpp",
         "FlexCounterManager.cpp",
+        "FlowDump.cpp",
         "GlobalSwitchId.cpp",
         "HardReiniter.cpp",
         "MdioIpcServer.cpp",
@@ -70,6 +71,7 @@ cc_library(
     includes = ["."],
     deps = ["//lib:SaiRedis", "//:saimetadata_objs", "//vslib:saivs_hdrs", "//:common_flags"],
     cxxopts = ["-Wno-stack-protector", "-Wno-format-nonliteral"],
+    linkopts = ["-lz"],
 
 )
 
@@ -78,7 +80,7 @@ cc_binary(
     srcs = ["main.cpp"],
     deps = [":Syncd", "//lib:SaiRedis", "//:common_flags"],
     dynamic_deps = ["//meta:saimeta", ":dummy_sai", "@sonic-swss-common//:swsscommon"],
-    linkopts = ["-ldl", "-lhiredis", "-lzmq", "-lpthread"],
+    linkopts = ["-ldl", "-lhiredis", "-lzmq", "-lpthread", "-lz"],
 )
 
 # Rename for packaging: both syncd and syncd-vs install as /usr/bin/syncd
