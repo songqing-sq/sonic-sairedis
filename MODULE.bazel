@@ -1,0 +1,53 @@
+module(
+    name = "sonic-sairedis",
+    version = "1.0.0",
+)
+
+# Versions aligned with sonic-dzf/MODULE.bazel and src/sonic-swss-common/MODULE.bazel
+# so that Bzlmod resolves a single, consistent graph across the workspace.
+bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+
+bazel_dep(name = "sonic-build-infra", version = "0.0.0", repo_name = "sonic_build_infra")
+bazel_dep(name = "rules_distroless", version = "0.0.0", repo_name = "rules_deb")
+
+bazel_dep(name = "libnl3", version = "3.7.0")
+bazel_dep(name = "libyang3", version = "3.12.2")
+bazel_dep(name = "sonic-swss-common", version = "1.0.0")
+
+# SAI is vendored under src/sonic-sairedis/SAI as a submodule; expose it as a
+# nested Bzlmod module so it can be pulled in via `@sai//...` labels the same
+# way the reference sonic-bazel tree wires it up (see SAI/MODULE.bazel).
+bazel_dep(name = "sai", version = "0.0.0")
+local_path_override(
+    module_name = "sai",
+    path = "SAI",
+)
+
+# Python + SWIG toolchains for pyext/pysairedis. The root MODULE.bazel already
+# registers rules_python 1.7.0 with a 3.13 default toolchain (matching trixie's
+# system libpython3.13); we consume `current_py_cc_headers`/`current_py_cc_libs`
+# just like sonic-swss-common's _swsscommon extension does.
+bazel_dep(name = "rules_python", version = "1.7.0")
+bazel_dep(name = "swig", version = "4.1.0")
+
+# Build-time apt deps. Same pattern as sonic-swss-common/MODULE.bazel (swss_deps):
+# a submodule's BUILD files can only reference @-repos that are use_repo'd within
+# the same module, so we declare the apt.install here even though the root
+# MODULE.bazel also declares a `sairedis_apt` for its own aspect-based
+# packaging use.
+apt = use_extension("@rules_deb//apt:extensions.bzl", "apt")
+apt.install(
+    dependency_set = "sairedis_deps",
+    packages = [
+        "libhiredis-dev:amd64",
+        "libhiredis-dev:arm64",
+        "libzmq3-dev:amd64",
+        "libzmq3-dev:arm64",
+        "zlib1g-dev:amd64",
+        "zlib1g-dev:arm64",
+    ],
+    suites = ["trixie", "trixie-updates", "trixie-security"],
+)
+use_repo(apt, "sairedis_deps")

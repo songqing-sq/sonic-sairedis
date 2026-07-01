@@ -1,3 +1,21 @@
+# === Bazel infrastructure (allow-list) ===
+# Explicitly un-ignore Bazel files we've added for the Make -> Bazel migration.
+# Must precede the generic globs below so that files like `**/Makefile` and
+# `debian/*` don't accidentally sweep them up in future contributions.
+!BUILD
+!BUILD.bazel
+!MODULE.bazel
+!MODULE.bazel.lock
+!*.bzl
+!*/BUILD
+!*/BUILD.bazel
+!*/MODULE.bazel
+!SAI/BUILD.bazel
+!SAI/MODULE.bazel
+!SAI/**/BUILD.bazel
+!pyext/BUILD
+!pyext/py3/BUILD
+
 # Compiled Source #
 ###################
 *.a
