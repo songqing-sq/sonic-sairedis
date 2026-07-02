@@ -32,12 +32,21 @@ local_path_override(
 bazel_dep(name = "rules_python", version = "1.7.0")
 bazel_dep(name = "swig", version = "4.1.0")
 
-# Build-time apt deps. Same pattern as sonic-swss-common/MODULE.bazel (swss_deps):
-# a submodule's BUILD files can only reference @-repos that are use_repo'd within
-# the same module, so we declare the apt.install here even though the root
-# MODULE.bazel also declares a `sairedis_apt` for its own aspect-based
-# packaging use.
+# Build-time apt deps. Submodule declares its own sources_list + install so
+# BUILD files can reference @sairedis_deps//... directly without root module.
 apt = use_extension("@rules_deb//apt:extensions.bzl", "apt")
+apt.sources_list(
+    architectures = ["amd64", "arm64"],
+    components = ["main"],
+    suites = ["trixie", "trixie-updates"],
+    uris = ["https://snapshot.debian.org/archive/debian/20260409T202916Z"],
+)
+apt.sources_list(
+    architectures = ["amd64", "arm64"],
+    components = ["main"],
+    suites = ["trixie-security"],
+    uris = ["https://snapshot.debian.org/archive/debian-security/20260409T182303Z"],
+)
 apt.install(
     dependency_set = "sairedis_deps",
     packages = [
