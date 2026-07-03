@@ -1,0 +1,60 @@
+package(default_visibility = ["//visibility:public"])
+
+# All meta targets live in @sai_src's root package (single BUILD template
+# rendered by stock sonic_http_archive).  These aliases preserve the historical
+# @sai//meta:... subpackage-style labels for downstream consumers.
+
+alias(
+    name = "saimetadata",
+    actual = "@sai_src//:saimetadata",
+)
+
+alias(
+    name = "saimetadata_shared",
+    actual = "@sai_src//:saimetadata_shared",
+)
+
+alias(
+    name = "saimetadata_files",
+    actual = "@sai_src//:saimetadata_files",
+)
+
+alias(
+    name = "saimetadata_hdrs",
+    actual = "@sai_src//:saimetadata_hdrs",
+)
+
+alias(
+    name = "saimetadata_hdr_files",
+    actual = "@sai_src//:saimetadata_hdr_files",
+)
+
+alias(
+    name = "saimetadata_version_link",
+    actual = "@sai_src//:saimetadata_version_link",
+)
+
+alias(
+    name = "saimetadata_dev_link",
+    actual = "@sai_src//:saimetadata_dev_link",
+)
+
+alias(
+    name = "saimetadata_dev_link_direct",
+    actual = "@sai_src//:saimetadata_dev_link_direct",
+)
+
+alias(
+    name = "meta_hdrs",
+    actual = "@sai_src//:meta_hdrs",
+)
+
+alias(
+    name = "saimetadata_sources",
+    actual = "@sai_src//:saimetadata_sources",
+)
+
+alias(
+    name = "saiattrversion_h_stub",
+    actual = "@sai_src//:saiattrversion_h_stub",
+)

@@ -1,0 +1,16 @@
+package(default_visibility = ["//visibility:public"])
+
+# @sai//... label facade. All targets forward to the @sai_src http_archive
+# repo produced by sonic_http_archive in this module's MODULE.bazel. Keeping
+# this indirection lets consumers keep using stable @sai//... labels while the
+# upstream source moves from a git submodule to a tarball fetch.
+
+alias(
+    name = "sai_files",
+    actual = "@sai_src//:sai_files",
+)
+
+alias(
+    name = "sai_hdrs",
+    actual = "@sai_src//:sai_hdrs",
+)

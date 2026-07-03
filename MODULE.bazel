@@ -16,13 +16,17 @@ bazel_dep(name = "libnl3", version = "3.7.0")
 bazel_dep(name = "libyang3", version = "3.12.2")
 bazel_dep(name = "sonic-swss-common", version = "1.0.0")
 
-# SAI is vendored under src/sonic-sairedis/SAI as a submodule; expose it as a
-# nested Bzlmod module so it can be pulled in via `@sai//...` labels the same
-# way the reference sonic-bazel tree wires it up (see SAI/MODULE.bazel).
+# SAI is exposed as a nested Bzlmod module via a wrapper directory at
+# src/sonic-sairedis/SAI-bazel which fetches the upstream SAI v1.18.1 tarball
+# through sonic_http_archive.  Bzlmod only honours root-level
+# local_path_override (see mig_docs/lessonlearned/sonic-sairedis_lessonlearned.md
+# Lesson 1); the effective override is declared in the root MODULE.bazel.  The
+# entry here is retained so `bazel build` from this directory during
+# development still resolves consistently.
 bazel_dep(name = "sai", version = "0.0.0")
 local_path_override(
     module_name = "sai",
-    path = "SAI",
+    path = "SAI-bazel",
 )
 
 # Python + SWIG toolchains for pyext/pysairedis. The root MODULE.bazel already

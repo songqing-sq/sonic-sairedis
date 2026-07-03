@@ -10,9 +10,6 @@
 !*/BUILD
 !*/BUILD.bazel
 !*/MODULE.bazel
-!SAI/BUILD.bazel
-!SAI/MODULE.bazel
-!SAI/**/BUILD.bazel
 !pyext/BUILD
 !pyext/py3/BUILD
 

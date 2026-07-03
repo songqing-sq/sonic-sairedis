@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "sai_experimental_files",
+    actual = "@sai_src//:sai_experimental_files",
+)
+
+alias(
+    name = "sai_experimental",
+    actual = "@sai_src//:sai_experimental",
+)

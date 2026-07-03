@@ -1,0 +1,60 @@
+module(name = "sai", version = "0.0.0")
+
+# SAI (Switch Abstraction Interface) upstream headers + meta code generator.
+#
+# Historically this module pointed at the SAI git submodule under
+# src/sonic-sairedis/SAI via local_path_override; that required checking Bazel
+# files into an externally-maintained submodule tree.  This module now fetches
+# the upstream v1.18.1 tarball from GitHub via sonic_http_archive and applies
+# BUILD templates hosted under this directory, keeping the SAI submodule
+# untouched.
+#
+# Consumer label contract preserved from the old layout (used by
+# sonic-sairedis/{lib,meta,syncd}/BUILD in sonic-bazel):
+#   @sai//:sai_files        @sai//:sai_hdrs
+#   @sai//inc:sai_inc_files @sai//inc:sai_inc
+#   @sai//experimental:sai_experimental_files @sai//experimental:sai_experimental
+#   @sai//meta:saimetadata @sai//meta:saimetadata_shared @sai//meta:saimetadata_files
+#   @sai//meta:saimetadata_dev_link @sai//meta:meta_hdrs
+# These are provided as alias(...) targets in this module's per-subpackage
+# BUILD.bazel files, forwarding to the fetched @sai_src//... repo.
+
+bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "rules_perl", version = "1.1.0")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+bazel_dep(name = "bazel_lib", version = "3.1.1")
+bazel_dep(name = "rules_doxygen", version = "2.6.3")
+bazel_dep(name = "sonic-build-infra", version = "0.0.0", repo_name = "sonic_build_infra")
+
+# Pin doxygen to 1.9.5 on linux. Newer versions (>=1.9.7) stopped emitting
+# <memberdef> in per-file XML (sai_*_8h.xml) for content wrapped in
+# @defgroup/@{ @}; SAI's parse.pl only reads per-file XML (xmlutils.pm
+# GetSaiXmlFiles), so on >=1.9.7 it sees zero enums and dies on
+# $SAI_ENUMS{sai_api_t}. 1.9.5 is the latest version available via GitHub
+# releases (rules_doxygen's download source) that preserves the old layout.
+doxygen_extension = use_extension("@rules_doxygen//:extensions.bzl", "doxygen_extension")
+doxygen_extension.configuration(
+    version = "1.9.5",
+    sha256 = "3b46471e7d4c3496e194d95042c7e5f738b93debacd22193aacc3df4dfe66267",
+    platform = "linux",
+)
+use_repo(doxygen_extension, "doxygen")
+
+sonic_http_archive = use_repo_rule(
+    "@sonic_build_infra//sonic_http_archive:sonic_http_archive.bzl",
+    "sonic_http_archive",
+)
+
+# SAI v1.18.1 (matches the pinned submodule commit
+# c67f1152309ca08a94de0be8634a733c5cb25c35 in src/sonic-sairedis/.gitmodules).
+# sai.BUILD defines every target (inc / experimental / meta) as a single root
+# package inside the fetched repo; the per-subpackage @sai//inc, @sai//meta,
+# @sai//experimental labels are provided by alias BUILDs in this wrapper.
+sonic_http_archive(
+    name = "sai_src",
+    urls = ["https://github.com/opencomputeproject/SAI/archive/refs/tags/v1.18.1.tar.gz"],
+    sha256 = "84f2fbd6bf672abaefddfd78a28fec794e37477bf9702fbb56d7bd53ff930ba3",
+    strip_prefix = "SAI-1.18.1",
+    build_file_template = "//:sai.BUILD",
+)

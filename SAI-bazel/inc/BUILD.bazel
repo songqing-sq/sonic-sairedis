@@ -1,0 +1,11 @@
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "sai_inc_files",
+    actual = "@sai_src//:sai_inc_files",
+)
+
+alias(
+    name = "sai_inc",
+    actual = "@sai_src//:sai_inc",
+)
