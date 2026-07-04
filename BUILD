@@ -232,3 +232,41 @@ sonic_deb(
     section = "libs",
     version = "1.0.0",
 )
+
+# =============================================================================
+# syncd-vs .deb — corresponds to $(SYNCD_VS) in platform/vs/syncd-vs.mk.
+# Ships syncd binary (linked with vslib), companion tools, scripts, and
+# libMdioIpcClient shared library.
+# =============================================================================
+sonic_deb(
+    name = "syncd-vs_1.0.0.deb",
+    changelog = "debian/changelog",
+    conflicts = [
+        "syncd-rpc",
+        "syncd",
+    ],
+    content = {
+        "/usr/bin:*:0755": [
+            "//syncd:syncd_vs_bin",
+            "//syncd:syncd_request_shutdown",
+            "//syncd:syncd_tests",
+            "//saiasiccmp:saiasiccmp",
+            "//saidiscovery:saidiscovery",
+            "//saidump:saidump",
+            "//saiplayer:saiplayer",
+            "//saisdkdump:saisdkdump",
+        ],
+        "/usr/bin:scripts:0755": ["//syncd:syncd_scripts"],
+        "${LIBDIR}": ["//syncd:MdioIpcClient_files"],
+    },
+    depends = [
+        "libsairedis (>= 1.0.0)",
+        "libsaimetadata (>= 1.0.0)",
+        "libsaivs (>= 1.0.0)",
+    ],
+    description = "This package contains sync daemon for SONiC project linked with virtual switch.\n  This sync daemon syncs the ASIC_DB in Redis database and the real ASIC via SAI.",
+    gen_dbg = True,
+    maintainer = "SONiC Maintainers",
+    package = "syncd-vs",
+    version = "1.0.0",
+)
