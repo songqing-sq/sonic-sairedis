@@ -104,6 +104,12 @@ sonic_deb(
             "@sai//meta:saimetadata_files",
         ],
     },
+    depends = [
+        "libc6 (>= 2.38)",
+        "libgcc-s1 (>= 3.0)",
+        "libstdc++6 (>= 13.1)",
+        "libswsscommon (>= 1.0.0)",
+    ],
     description = "This package contains SAI-Metadata implementation for SONiC project.",
     gen_dbg = True,
     maintainer = "SONiC Maintainers",
@@ -141,7 +147,12 @@ sonic_deb(
     content = {
         "${LIBDIR}": ["//lib:sairedis_files"],
     },
-    depends = ["libswsscommon (>= 1.0.0)"],
+    depends = [
+        "libc6 (>= 2.38)",
+        "libgcc-s1 (>= 3.0)",
+        "libstdc++6 (>= 13.1)",
+        "libswsscommon (>= 1.0.0)",
+    ],
     description = "This package contains SAI-Redis implementation for SONiC project.",
     gen_dbg = True,
     maintainer = "SONiC Maintainers",
@@ -157,7 +168,10 @@ sonic_deb(
         "/usr/include/sai:*": ["//lib:sairedis.h"],
         "${LIBDIR}": ["//lib:sairedis_dev_link"],
     },
-    depends = ["libsairedis (= 1.0.0)"],
+    depends = [
+        "libsairedis (= 1.0.0)",
+        "libzmq5-dev",
+    ],
     description = "This package contains development files for SAI-Redis.",
     maintainer = "SONiC Maintainers",
     package = "libsairedis-dev",
@@ -174,7 +188,12 @@ sonic_deb(
     content = {
         "${LIBDIR}": ["//vslib:saivs_files"],
     },
-    depends = ["libsaimetadata (= 1.0.0)"],
+    depends = [
+        "libc6 (>= 2.38)",
+        "libgcc-s1 (>= 3.0)",
+        "libsaimetadata (>= 1.0.0)",
+        "libstdc++6 (>= 13.1)",
+    ],
     description = "This package contains SAI-VirtualSwitch implementation for SONiC project.",
     gen_dbg = True,
     maintainer = "SONiC Maintainers",
@@ -221,8 +240,12 @@ sonic_deb(
         ],
     },
     depends = [
-        "libsairedis (>= 1.0.0)",
+        "libc6 (>= 2.14)",
+        "libgcc-s1 (>= 3.0)",
+        "libpython3.13 (>= 3.13.0~rc3)",
         "libsaimetadata (>= 1.0.0)",
+        "libsairedis (>= 1.0.0)",
+        "libstdc++6 (>= 13.1)",
         "libswsscommon (>= 1.0.0)",
     ],
     description = "This package contains Switch State Service sairedis Python3 library.",
@@ -242,8 +265,8 @@ sonic_deb(
     name = "syncd-vs_1.0.0.deb",
     changelog = "debian/changelog",
     conflicts = [
-        "syncd-rpc",
         "syncd",
+        "syncd-rpc",
     ],
     content = {
         "/usr/bin:*:0755": [
@@ -260,9 +283,7 @@ sonic_deb(
         "${LIBDIR}": ["//syncd:MdioIpcClient_files"],
     },
     depends = [
-        "libsairedis (>= 1.0.0)",
-        "libsaimetadata (>= 1.0.0)",
-        "libsaivs (>= 1.0.0)",
+        "init-system-helpers (>= 1.54~)",
     ],
     description = "This package contains sync daemon for SONiC project linked with virtual switch.\n  This sync daemon syncs the ASIC_DB in Redis database and the real ASIC via SAI.",
     gen_dbg = True,

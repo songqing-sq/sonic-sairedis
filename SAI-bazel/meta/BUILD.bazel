@@ -58,3 +58,21 @@ alias(
     name = "saiattrversion_h_stub",
     actual = "@sai_src//:saiattrversion_h_stub",
 )
+
+# Generated-file labels used by pyext SWIG bindings. The genrules in @sai_src's
+# root package emit these under a meta/ path prefix; re-expose them under the
+# historical @sai//meta:<name> labels.
+alias(
+    name = "saiswig.i",
+    actual = "@sai_src//:meta/saiswig.i",
+)
+
+alias(
+    name = "saimetadata.h",
+    actual = "@sai_src//:meta/saimetadata.h",
+)
+
+alias(
+    name = "saiattrversion.h",
+    actual = "@sai_src//:meta/saiattrversion.h",
+)
