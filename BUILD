@@ -271,6 +271,7 @@ sonic_deb(
     content = {
         "/usr/bin:*:0755": [
             "//syncd:syncd_vs_bin",
+            "//syncd:syncd_dash",
             "//syncd:syncd_request_shutdown",
             "//syncd:syncd_tests",
             "//saiasiccmp:saiasiccmp",

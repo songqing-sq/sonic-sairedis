@@ -29,6 +29,15 @@ local_path_override(
     path = "SAI-bazel",
 )
 
+# dash-sai (@dash-sai) provides the DASH libsai.so (libsai_shared) that syncd_dash
+# dynamic-links; p4lang (@p4lang) provides libpiprotobuf/libpiprotogrpc (cc_import)
+# to satisfy libsai.so's undefined P4Runtime symbols at link time (INCLUDE_VS_DASH_SAI
+# =y: docker-syncd-vs / docker-gbsyncd-vs ship syncd_dash as the DASH-SAI-linked
+# syncd). Only the root MODULE.bazel's local_path_override is honoured by Bzlmod, so
+# no overrides are declared here; the root supplies the paths.
+bazel_dep(name = "dash-sai", version = "1.0.0")
+bazel_dep(name = "p4lang", version = "0.1.1")
+
 # Python + SWIG toolchains for pyext/pysairedis. The root MODULE.bazel already
 # registers rules_python 1.7.0 with a 3.13 default toolchain (matching trixie's
 # system libpython3.13); we consume `current_py_cc_headers`/`current_py_cc_libs`

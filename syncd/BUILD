@@ -118,6 +118,59 @@ genrule(
     cmd = "cp $(execpath :syncd-vs) $(OUTS)",
 )
 
+# syncd_dash — the DASH-SAI-linked syncd (Make: syncd/Makefile.am `syncd_dash`,
+# built when INCLUDE_VS_DASH_SAI=y). Same main.cpp/Syncd sources as syncd-vs, but
+# the SAI implementation is the DASH libsai.so (@dash-sai//:libsai_shared), loaded
+# at runtime instead of the statically-linked vslib saivs. libsai.so is built
+# allow_undefined=True and leaves p4::v1 (P4Runtime) / protobuf / gpr symbols
+# undefined; Make resolves them via `-lsai -lprotobuf -lpiprotobuf -lpiprotogrpc
+# -lgrpc++` (Makefile.am:133). We mirror that: link @p4lang's libpiprotobuf /
+# libpiprotogrpc (cc_import); their transitive protobuf/grpc/gpr/absl deps are the
+# Debian apt libs already in the image. -Wl,--allow-shlib-undefined lets those
+# transitive symbols resolve at runtime (matching Make, which also relies on the
+# dynamic loader). syncd/scripts/syncd_init_common.sh prefers /usr/bin/syncd_dash.
+cc_binary(
+    name = "syncd_dash_elf",
+    srcs = ["main.cpp"],
+    copts = [
+        "-Wno-stack-protector",
+        "-Wno-format-nonliteral",
+        "-Wno-error=format",
+    ],
+    linkopts = [
+        "-rdynamic",
+        "-Wl,--allow-shlib-undefined",
+    ],
+    dynamic_deps = [
+        "//meta:saimeta_shared",
+        "@dash-sai//:libsai_shared",
+        "@sonic-swss-common//:swsscommon_shared",
+        "@libnl3//:libnl_3_shared",
+        "@libnl3//:libnl_nf_3_shared",
+        "@libnl3//:libnl_route_3_shared",
+        "@libyang3//:yang_shared",
+    ],
+    deps = [
+        ":Syncd",
+        "//:common_flags",
+        "//lib:SaiRedis",
+        "@p4lang//:libpiprotobuf",
+        "@p4lang//:libpiprotogrpc",
+        "@sairedis_deps//libhiredis-dev:libhiredis",
+        "@sairedis_deps//libzmq3-dev:libzmq3",
+        "@sonic_build_infra//system_libs:dl",
+        "@sonic_build_infra//system_libs:pthread",
+    ],
+)
+
+genrule(
+    name = "syncd_dash",
+    srcs = [":syncd_dash_elf"],
+    outs = ["dash/syncd_dash"],
+    cmd = "cp $(execpath :syncd_dash_elf) $(OUTS)",
+)
+
+
 cc_library(
     name = "SyncdRequestShutdown",
     srcs = [
