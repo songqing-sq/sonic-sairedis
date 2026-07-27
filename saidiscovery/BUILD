@@ -7,7 +7,7 @@ cc_binary(
     srcs = ["saidiscovery.cpp"],
     linkopts = ["-Wl,--enable-new-dtags"],
     dynamic_deps = [
-        "//syncd:dummy_sai_shared",
+        "//vslib:saivs_shared",
         "//meta:saimeta_shared",
         "@sai//meta:saimetadata_shared",
         "@sonic-swss-common//:swsscommon_shared",
@@ -18,7 +18,7 @@ cc_binary(
     ],
     deps = [
         "//syncd:Syncd",
-        "//syncd:dummy_sai",
+        "//vslib:saivs",
         "//meta:saimeta",
     ],
 )
